@@ -19,14 +19,15 @@ form.addEventListener("submit", async (event) => {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
 
-  db.collection("users").add({
+  try {
+    await db.collection("users").add({
       username: username,
       email: email
-  }).then(() => {
-      document.getElementById("message").innerText = "Data saved successfully!";
-  }).catch((error) => {
-      document.getElementById("message").innerText = "Error: " + error.message;
-  });
+    });
+    document.getElementById("message").innerText = "Data saved successfully!";
+  } catch (error) {
+    document.getElementById("message").innerText = "Error: " + error.message;
+  }
 });
 
   
