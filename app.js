@@ -9,12 +9,8 @@ const firebaseConfig = {
   appId: "1:952449401322:web:df03abd1966df0a780b293"
 };
 
-// Initialize Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // Form Submission
 const form = document.getElementById("userForm");
@@ -23,15 +19,14 @@ form.addEventListener("submit", async (event) => {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
 
-  try {
-    await addDoc(collection(db, "users"), {
+  db.collection("users").add({
       username: username,
-      email: email,
-    });
-    document.getElementById("message").innerText = "Data saved successfully!";
-  } catch (error) {
-    document.getElementById("message").innerText = "Error: " + error.message;
-  }
+      email: email
+  }).then(() => {
+      document.getElementById("message").innerText = "Data saved successfully!";
+  }).catch((error) => {
+      document.getElementById("message").innerText = "Error: " + error.message;
+  });
 });
 
   
